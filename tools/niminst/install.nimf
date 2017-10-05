@@ -5,7 +5,7 @@
 
 set -e
 
-if [ $# -eq 1 ] ; then
+if [ $# -ge 1 ] ; then
 # if c.cat[fcUnixBin].len > 0:
   if test -f ?{c.cat[fcUnixBin][0].toUnix}
   then
@@ -56,15 +56,16 @@ if [ $# -eq 1 ] ; then
       mkdir -p $configdir
       ;;
     *)
-      bindir="$1/?proj/bin"
-      configdir="$1/?proj/config"
-      libdir="$1/?proj/lib"
-      docdir="$1/?proj/doc"
-      datadir="$1/?proj/data"
-      nimbleDir="$1/?proj"
-      mkdir -p $1/?proj
+      bindir="$1"
+      configdir="$2/?proj"
+      libdir="$3/?proj"
+      docdir="$4/?proj"
+      datadir="$5/?proj"
+      nimbleDir="$5/nimble/pkgs/?c.nimblePkgName-?c.version"
       mkdir -p $bindir
       mkdir -p $configdir
+      mkdir -p $datadir
+      mkdir -p $nimbleDir
       ;;
   esac
 
