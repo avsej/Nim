@@ -507,7 +507,7 @@ proc setDefaultLibpath*(conf: ConfigRef) =
     var prefix = getPrefixDir(conf)
     when defined(posix):
       if prefix == AbsoluteDir"/usr":
-        conf.libpath = AbsoluteDir"/usr/lib/nim"
+        conf.libpath = AbsoluteDir"/usr/share/nim"
       elif prefix == AbsoluteDir"/usr/local":
         conf.libpath = AbsoluteDir"/usr/local/lib/nim"
       else:
