@@ -840,6 +840,17 @@ proc renderSmiley(d: PDoc, n: PRstNode, result: var string) =
     "\\includegraphics{$1}",
     [d.config.getOrDefault"doc.smiley_format" % n.text])
 
+proc exe(f: string): string = return addFileExt(f, ExeExt)
+
+proc findNim(): string =
+  var nim = "nim".exe
+  result = "bin" / nim
+  if existsFile(result): return
+  for dir in split(getEnv("PATH"), PathSep):
+    if existsFile(dir / nim): return dir / nim
+  # assume there is a symlink to the exe or something:
+  return nim
+
 proc parseCodeBlockField(d: PDoc, n: PRstNode, params: var CodeBlockParams) =
   ## Parses useful fields which can appear before a code block.
   ##
@@ -862,9 +873,9 @@ proc parseCodeBlockField(d: PDoc, n: PRstNode, params: var CodeBlockParams) =
   of "test":
     params.testCmd = n.getFieldValue.strip
     if params.testCmd.len == 0:
-      params.testCmd = "nim c -r $1"
+      params.testCmd = findNim() & " c -r $1"
     else:
-      params.testCmd = unescape(params.testCmd)
+      params.testCmd = unescape(params.testCmd.replaceWord("nim", findNim()))
   of "status", "exitcode":
     var status: int
     if parseInt(n.getFieldValue, status) > 0:
