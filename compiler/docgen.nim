@@ -686,7 +686,7 @@ proc genItem(d: PDoc, n, nameNode: PNode, k: TSymKind) =
       let defaultBranch =
         if NimPatch mod 2 == 1: "devel"
         else: "version-$1-$2" % [$NimMajor, $NimMinor]
-      let commit = getConfigVar(d.conf, "git.commit", defaultBranch)
+      let commit = getConfigVar(d.conf, "git.commit", "v" & NimVersion)
       let develBranch = getConfigVar(d.conf, "git.devel", "devel")
       dispA(d.conf, seeSrcRope, "$1", "", [ropeFormatNamedVars(d.conf, docItemSeeSrc,
           ["path", "line", "url", "commit", "devel"], [rope path.string,
